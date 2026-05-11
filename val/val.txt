@@ -1,0 +1,172 @@
+*/main
+
+
+Poll SCM
+
+H/5 * * * *
+
+Build Steps
+
+Invoke top-level Maven targets
+
+clean compile test package
+
+Add Build 
+
+Execute Windows batch command
+
+java -cp target/jenkins-demo-1.0-SNAPSHOT.jar com.example.App
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------
+
+
+STEP 1 — Create Sample Maven Project
+
+You already know this.
+
+Example:
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=jenkins-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+Go inside project:
+
+cd jenkins-demo
+
+Build once manually:
+
+mvn clean package
+
+If BUILD SUCCESS appears → project is ready.
+
+STEP 2 — Push Project to GitHub
+
+Inside project folder:
+
+git init
+git add .
+git commit -m "first commit"
+
+Create empty GitHub repo.
+
+Then:
+
+git remote add origin YOUR_REPO_URL
+
+Example:
+
+git remote add origin https://github.com/username/jenkins-demo.git
+
+Then:
+
+git branch -M main
+git push -u origin main
+STEP 3 — Open Jenkins
+
+Open:
+
+http://localhost:8081
+STEP 4 — Create Jenkins Job
+
+Click:
+
+New Item
+
+Name:
+
+Maven-CI-Pipeline
+
+Choose:
+
+Freestyle Project
+
+Click:
+
+OK
+STEP 5 — Configure GitHub Repository
+
+Under:
+
+Source Code Management
+
+Choose:
+
+Git
+
+Paste your GitHub repo URL.
+
+Example:
+
+https://github.com/username/jenkins-demo.git
+STEP 6 — Build Trigger
+
+You can skip polling for now if teacher doesn’t strictly require it.
+
+OR enable:
+
+Poll SCM
+
+Schedule:
+
+H/5 * * * *
+
+Meaning:
+
+Jenkins checks GitHub every 5 minutes.
+STEP 7 — Configure Maven Build
+
+Under:
+
+Build
+
+Click:
+
+Add Build Step
+
+Choose:
+
+Invoke top-level Maven targets
+
+Goals:
+
+clean compile test package
+
+This means:
+
+clean old files,
+compile Java,
+run tests,
+create JAR.
+STEP 8 — Run JAR After Build
+
+Add another build step:
+
+Execute Windows batch command
+
+Command:
+
+java -cp target/jenkins-demo-1.0-SNAPSHOT.jar com.example.App
+
+Replace:
+
+jenkins-demo
+com.example.App
+
+with your actual project name/package.
+
+STEP 9 — Save and Build
+
+Click:
+
+Save
+
+Then:
+
+Build Now
+STEP 10 — See Output
