@@ -19,5 +19,5 @@ steps:
 
 - script: |
     echo "Running the JAR file..."
-    java -jar deployed\*.jar
-  displayName: 'Run Application'
+    dir deployed
+  displayName: 'Verify Deployment'
