@@ -1,0 +1,26 @@
+trigger:
+- main
+
+pool:
+  name: 'Agent_Pool'
+
+steps:
+- checkout: self
+  displayName: 'Checkout Code'
+
+- script: mvn clean test
+  displayName: 'Build and Run Unit Tests'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
+    testResultsFormat: 'JUnit'
+    failTaskOnMissingResultsFile: true
+  displayName: 'Publish Test Results'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'target'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish Build Artifact'
