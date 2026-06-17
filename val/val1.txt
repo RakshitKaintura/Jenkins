@@ -1,0 +1,88 @@
+Program 10 
+
+
+trigger:
+- main
+
+pool:
+  name: 'MyLocalPool'
+
+steps:
+- checkout: self
+  displayName: 'Checkout Code from GitHub'
+
+- script: mvn clean test
+  displayName: 'Build and Run Unit Tests'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
+    testResultsFormat: 'JUnit'
+    failTaskOnMissingResultsFile: true
+  displayName: 'Publish Maven Test Results'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'target'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish Build Artifacts'
+
+
+
+  Program 11
+
+
+  trigger:
+- main
+
+pool:
+  name: Agent_Pool
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'package'
+
+- script: |
+    echo "Simulating deployment..."
+    mkdir deployed
+    copy target\*.jar deployed\
+    echo "Deployment successful!"
+  displayName: 'Simulate Deployment'
+
+- script: |
+    echo "Contents of deployed folder:"
+    dir deployed
+  displayName: 'Verify Deployment Output'
+
+
+
+
+Program 12
+
+      
+trigger:
+- main
+
+pool:
+  name: Agent_Pool
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+
+- script: |
+    echo "Simulating deployment..."
+    mkdir deployed
+    copy target\*.jar deployed\
+    echo "Deployment successful!"
+  displayName: 'Simulate Deployment'
+
+- script: |
+    echo "Running the JAR file..."
+    dir deployed
+  displayName: 'Verify Deployment'
